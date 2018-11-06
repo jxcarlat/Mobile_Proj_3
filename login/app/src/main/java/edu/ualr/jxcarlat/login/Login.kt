@@ -1,26 +1,19 @@
 package edu.ualr.jxcarlat.login
 
-import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
-import kotlinx.coroutines.experimental.async
+import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
-import com.google.gson.Gson
 import java.lang.Exception
 
-const val Key_Authorization: String = "authorized_user_ualr"
-
-
-
-class MainActivity : AppCompatActivity() {
+class Login : AppCompatActivity() {
 
     private lateinit var client: OkHttpClient
 
@@ -34,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        val myUrl = "http://messenger.mattkennett.com/api-auth/v1/registration/"
+        val myUrl = "http://messenger.mattkennett.com/api-auth/v1/login/"
         val request: Request = Request.Builder()
                 .url(myUrl)
                 .build()
@@ -69,8 +62,7 @@ class MainActivity : AppCompatActivity() {
 
             uiThread {
                 newTextView.text = updateText
-                val intent = Intent(this, Login::class.java)
-                val newButton = Button(this)
+
                 linearLayoutResponse.addView(newTextView)
             }
         }
