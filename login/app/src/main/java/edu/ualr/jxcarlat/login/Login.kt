@@ -54,7 +54,13 @@ class Login : AppCompatActivity() {
 
                 val myUser: GithubUser = gson.fromJson(responseBody, GithubUser::class.java)
 
-                updateText = myUser.login + "\n" + myUser.url
+                //val myMessage: messenger =
+                      //  gson.fromJson(responseBody, messenger::class.java)
+
+                val responseCode: Int = response.code()
+
+                Log.d("MPK_UTILITY", "Body: " + responseBody)
+                Log.d("MPK_UTILITY", "Code: " + responseCode.toString())
             }
             else {
                 updateText = "Network Error"
@@ -62,12 +68,16 @@ class Login : AppCompatActivity() {
 
             uiThread {
                 newTextView.text = updateText
+                linearLayoutResponse.removeAllViews()
+                val newTextView = TextView(this@Login)
 
-                linearLayoutResponse.addView(newTextView)
+                var newTextViewString: String = ""
+
+
+                }
             }
         }
 
 
 
     }
-}

@@ -15,84 +15,69 @@ import okhttp3.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
-const val USERNAME: String = "username"
-const val PASSWORD: String = "password"
-const val PASSWORD2: String = "confirm"
+const val KEY_AUTHORIZATION = ""
 
 
 class MainActivity : AppCompatActivity() {
-
-    val username = findViewById(R.id.editText) as EditText
-    val password = findViewById(R.id.editText2) as EditText
-    val confirmation = findViewById(R.id.editText3) as EditText
     private lateinit var client: OkHttpClient
+
+    lateinit var username: String
+    lateinit var password: String
+    lateinit var password2: String
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val submitButton: Button = findViewById(R.id.button)
 
-        client = OkHttpClient()
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        val myUrl = "http://messenger.mattkennett.com/api-auth/v1/registration/"
-        val formBody: RequestBody = FormBody.Builder()
-                .add("action", "authentication")
-                .build()
-        val request: Request = Request.Builder()
-                .url(myUrl)
-                .build()
-
-        val linearLayoutResponse: LinearLayout = findViewById(R.id.linearLayout)
-
-        val newTextView: TextView = TextView(this)
-
-        var updateText: String = ""
-
-        doAsync {
-            var response: Response? = null
-
-            try {
-                response = client.newCall(request).execute()
-            }catch (e: Exception) {
-                Log.d("MPK_UTILITY", "Network Error")
-            }
-
-            if (response != null) {
-                val responseBody: String = response.body()!!.string()
-
-                val gson = Gson()
-
-                val requestBody: String = response.body()!!.string()
-                Log.d("MPK_UTILITY", requestBody)
-
-                val quizList: List<QuizType> =
-                        gson.fromJson(requestBody,
-                                object : TypeToken<List<QuizType>>() {}.type)
+        submitButton.setOnClickListener {
+            Log.d("MPK_UTILITY", "setOnClickListener pressed")
+            val usernameEditText: EditText = findViewById(R.id.editText)
+            val passwordEditText: EditText = findViewById(R.id.editText2)
+            val confirmationEditText: EditText = findViewById(R.id.editText3)
+            client = OkHttpClient()
+            val myUrl = "http://messenger.mattkennett.com/api-auth/v1/registration/"
+            val formBody: RequestBody = FormBody.Builder()
+                    .add("username", usernameEditText.text.toString())
+                    .add("password1", passwordEditText.text.toString())
+                    .add("password2", confirmationEditText.text.toString())
+                    .build()
+            val request: Request = Request.Builder()
+                    .url(myUrl)
+                    .post(formBody)
+                    .build()
 
 
+            doAsync {
+                var response: Response? = null
+                Log.d("MPK_UTILITY", "doAsync called")
+                try {
+                    response = client.newCall(request).execute()
+                } catch (e: Exception) {
+                    Log.d("MPK_UTILITY", "Network Error")
+                }
 
-            }
-            else {
-                updateText = "Network Error"
-            }
+                if (response != null) {
+                    val responseBody: String = response.body()!!.string()
 
-            uiThread {
-                val intent = Intent(this@MainActivity, Login::class.java)
-                val newButton = Button(this@MainActivity)
-                newButton.setOnClickListener {
-                    intent.putExtra(USERNAME, username.text)
-                    intent.putExtra(PASSWORD, password.text)
-                    intent.putExtra(PASSWORD2, confirmation.text)
-                    startActivity(intent)
+                    val gson = Gson()
+                    Log.d("MPK_UTILITY", responseBody)
+                    val myUser: GithubUser = gson.fromJson(responseBody, GithubUser::class.java)
+                    val updateText: String = myUser.messages
+
+
+                    // else {
+                    //  Log.d("MPK_UTILITY", "Network Error")
+                    //  }
+
+                    uiThread {
+
+                    }
                 }
 
             }
         }
-
-
-
     }
 }
+
