@@ -4,4 +4,6 @@ data class GithubUser(
         val username: Array<String>? = null,
         val password1: Array<String>? = null,
         val password2: Array<String>? = null,
+        val password: Array<String>? = null,
+        val non_field_errors: Array<String>? = null,
         val key: String? = null)

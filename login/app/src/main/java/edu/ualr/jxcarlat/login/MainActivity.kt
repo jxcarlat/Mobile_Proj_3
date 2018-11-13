@@ -76,11 +76,9 @@ class MainActivity : AppCompatActivity() {
 
 
 
-                    // else {
-                    //  Log.d("MPK_UTILITY", "Network Error")
-                    //  }
-                    //If myUser.key is not null and contains a value, store this value
-                    //in our sharedPreferences and go into the Login activity
+
+                    //If myUser.key is not null and contains a value we go into our
+                    //Login activity
                     uiThread {
                         if(myUser.key != null)
                         {
@@ -89,14 +87,44 @@ class MainActivity : AppCompatActivity() {
 
 
                         }
+                        //Otherwise print out an error message and allow user to input another
+                        //username and password.
                         else
                         {
                             val linearLayoutMessage: LinearLayout = findViewById(R.id.linearLayout)
+                            linearLayoutMessage.removeAllViews()
                             val newTextView = TextView(this@MainActivity)
-                            newTextView.text = "Error logging in, please ensure " +
-                                    "that username is unique and passwords match. Password must " +
-                                    "contain at least 8 characters and at least one number."
+                            val newTextView2 = TextView(this@MainActivity)
+                            val newTextView3 = TextView(this@MainActivity)
+                            var newTextViewString: String = ""
+                            if(myUser.username != null) {
+                                for (text in myUser.username) {
+                                    newTextViewString += text + "\n"
+                                }
+                            }
+                            newTextView.text = newTextViewString
                             linearLayoutMessage.addView(newTextView)
+                            newTextViewString = ""
+                            if(myUser.password1 != null)
+                            {
+                                for(text1 in myUser.password1)
+                                {
+                                    newTextViewString += text1 + "\n"
+                                }
+                            }
+                            newTextView2.text = newTextViewString
+                            linearLayoutMessage.addView(newTextView2)
+                            newTextViewString = ""
+                            if(myUser.non_field_errors != null)
+                            {
+                                for(text2 in myUser.non_field_errors)
+                                {
+                                    newTextViewString += text2 + "\n"
+                                }
+                            }
+                            newTextView3.text = newTextViewString
+                            linearLayoutMessage.addView(newTextView3)
+
                         }
 
                     }

@@ -18,7 +18,7 @@ import java.lang.Exception
 const val KEY_AUTHORIZATION = ""
 
 class Login : AppCompatActivity() {
-    //We will initialize client and theKey later in the program
+    //We will initialize client later in the program
      lateinit var client: OkHttpClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,18 +38,18 @@ class Login : AppCompatActivity() {
             val usernameEditText: EditText = findViewById(R.id.editText4)
             val passwordEditText: EditText = findViewById(R.id.editText5)
             val formBody: RequestBody = FormBody.Builder()
-                    .add("username", usernameEditText.toString())
-                    .add("password1", passwordEditText.toString())
+                    .add("username", usernameEditText.text.toString())
+                    .add("password", passwordEditText.text.toString())
                     .build()
-            Log.d("MPK_UTILITY", usernameEditText.toString())
-            Log.d("MPK_UTILITY", passwordEditText.toString())
+            Log.d("MPK_UTILITY", usernameEditText.text.toString())
+            Log.d("MPK_UTILITY", passwordEditText.text.toString())
             val request: Request = Request.Builder()
                     .url(myUrl)
                     .post(formBody)
                     .build()
 
 
-            //If everything is successful than we should have a successful login message in our
+            //If everything is successful than we should have a successful key message in our
             //returned Json object.
             doAsync {
                 var response: Response? = null
@@ -71,17 +71,41 @@ class Login : AppCompatActivity() {
 
 
 
-
+                //If login is successful we grab the authorization key from the Json object and save
+                    //it in our sharedPreferences KEY_AUTHORIZATION. Then we switch over to our
+                    //Login Successful page.
                 uiThread {
                     if (myUser.key != null) {
                         val intent = Intent(this@Login, LoginSuccessful::class.java)
                         intent.putExtra(KEY_AUTHORIZATION, myUser.key)
                         startActivity(intent)
                     }
+                    //If login is unsuccessful we print out an error message and allow the user
+                    //to try again.
                     else
                     {
-                        val loginText: TextView = findViewById(R.id.textView)
-                        loginText.text = "login unsuccessful, user is not recognized."
+                        val linearLayoutMessage: LinearLayout = findViewById(R.id.linearLayout2)
+                        linearLayoutMessage.removeAllViews()
+                        val newTextView = TextView(this@Login)
+                        val newTextView2 = TextView(this@Login)
+                        var newTextViewString: String = ""
+                        if(myUser.password != null) {
+                            for (text in myUser.password) {
+                                newTextViewString += text + "\n"
+                            }
+                        }
+                        newTextView.text = newTextViewString
+                        linearLayoutMessage.addView(newTextView)
+                        newTextViewString = ""
+                        if(myUser.non_field_errors != null)
+                        {
+                            for(text1 in myUser.non_field_errors)
+                            {
+                                newTextViewString += text1 + "\n"
+                            }
+                        }
+                        newTextView2.text = newTextViewString
+                        linearLayoutMessage.addView(newTextView2)
                     }
 
                 }
