@@ -28,7 +28,8 @@
             android:name=".MyRegister"
             android:label="@string/title_activity_my_register"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".LoginSuccessful"></activity>
+        <activity android:name=".ChannelListActivity" />
+        <activity android:name=".ChatChannelActivity"></activity>
     </application>
 
 </manifest>

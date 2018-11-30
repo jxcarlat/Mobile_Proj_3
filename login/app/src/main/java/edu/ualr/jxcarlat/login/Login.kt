@@ -76,11 +76,13 @@ class Login : AppCompatActivity() {
                     //Login Successful page.
                 uiThread {
                     if (myUser.key != null) {
-                        val intent = Intent(this@Login, LoginSuccessful::class.java)
+                        val intent = Intent(this@Login, ChannelListActivity::class.java)
                         intent.putExtra(KEY_AUTHORIZATION, myUser.key)
                         startActivity(intent)
                     }
-                    //If login is unsuccessful we print out an error message and allow the user
+                    //If login is unsuccessful we print out error messages in our
+                    // newTextViewString variable to our linearLayout like we did
+                    // in the Register activity and allow the user
                     //to try again.
                     else
                     {
