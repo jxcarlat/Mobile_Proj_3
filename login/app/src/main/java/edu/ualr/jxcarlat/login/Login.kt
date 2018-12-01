@@ -15,7 +15,7 @@ import org.jetbrains.anko.uiThread
 import java.lang.Exception
 
 //We'll grab the key from the Json object here
-const val KEY_AUTHORIZATION = ""
+
 
 class Login : AppCompatActivity() {
     //We will initialize client later in the program
@@ -24,7 +24,6 @@ class Login : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
     }
 
     override fun onResume() {

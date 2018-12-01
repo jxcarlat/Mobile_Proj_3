@@ -4,7 +4,8 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-
+const val PK_ID = "edu.ualr.jxcarlat.login.PK_ID"
+const val KEY_AUTHORIZATION = "edu.ualr.jxcarlat.login.KEY_AUTHORIZATION"
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

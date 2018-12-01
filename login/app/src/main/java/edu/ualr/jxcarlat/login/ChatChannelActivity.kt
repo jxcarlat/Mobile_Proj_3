@@ -1,15 +1,19 @@
 package edu.ualr.jxcarlat.login
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.TextView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 import java.lang.Exception
 
 class ChatChannelActivity : AppCompatActivity() {
@@ -48,12 +52,23 @@ class ChatChannelActivity : AppCompatActivity() {
                 val responseBody: String = response.body()!!.string()
 
                 val gson = Gson()
-                Log.d("MPK_UTILITY", "I'm here first")
+                Log.d("MPK_UTILITY", "I'm about to gson")
                 val channelId: List<ChatChannel> = gson.fromJson(responseBody,
                         object : TypeToken<List<ChatChannel>>() {}.type)
                 Log.d("MPK_UTILITY", "I'm here")
 
+                uiThread {
+
+                    val linearLayoutMessage: LinearLayout = findViewById(R.id.linearLayout)
+                    val newTextView2 = TextView(this@ChatChannelActivity)
+                    var newTextViewString: String? = ""
+                    newTextViewString = channelId[0].channel
+                    newTextView2.text = newTextViewString
+                    linearLayoutMessage.addView(newTextView2)
+
+                }
             }
+
         }
     }
 }

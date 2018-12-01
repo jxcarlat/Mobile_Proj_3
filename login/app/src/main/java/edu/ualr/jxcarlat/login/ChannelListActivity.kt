@@ -17,7 +17,7 @@ import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import java.lang.Exception
 
-const val PK_ID = ""
+
 class ChannelListActivity : AppCompatActivity() {
 
     //If we hit this activity our login was successful and we grab the key from the previous login
@@ -66,21 +66,24 @@ class ChannelListActivity : AppCompatActivity() {
                 Log.d("MPK_UTILITY", "I'm here")
                 //Log.d("MPK_UTILITY", channelId.name.text.toString())
                 uiThread {
-                    if (channelId[0].name != null) {
                         val intent = Intent(this@ChannelListActivity, ChatChannelActivity::class.java)
                         for(names in channelId) {
                             val newButton = Button(this@ChannelListActivity)
                             newButton.text = names.name
                             newButton.setOnClickListener{
                                 intent.putExtra(PK_ID, names.pk)
+                                Log.d("MPK_UTILITY", "The pk value is: " + PK_ID)
+                                intent.putExtra(KEY_AUTHORIZATION, theKey)
+                                Log.d("MPK_UTILITY", "The key value is: " + KEY_AUTHORIZATION)
+                                Log.d("MPK_UTILITY", "The pk value is now: " + PK_ID)
                                 startActivity(intent)
+                                Log.d("MPK_UTILITY", "I've been pushed")
                             }
                             linearLayoutNames.addView(newButton)
                         }
 
                         Log.d("MPK_UTILITY", "You got me")
-                    }
-                    else
+                    if(channelId[0].detail != null)
                     {
                         val linearLayoutMessage: LinearLayout = findViewById(R.id.linearLayout2)
                         val newTextView2 = TextView(this@ChannelListActivity)
